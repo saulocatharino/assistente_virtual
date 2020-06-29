@@ -1,0 +1,104 @@
+<html>
+<head>
+	<title>ASSISTENTE VIRTUAL</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
+	<script src="p5.speech.js"></script>
+
+
+	<script>
+	var complete = '';
+	var ultima = '';
+	var ok = 0;
+	var url = '';
+	var msg = '';
+	var myRec = new p5.SpeechRec('pt-BR', parseResult); // new P5.SpeechRec object
+
+	myRec.continuous = true; // do continuous recognition
+	myRec.interimResults = true; // allow partial recognition (faster, less accurate)
+
+	var x, y;
+	var dx, dy;
+
+	function setup()
+	{
+		// graphics stuff:
+		createCanvas(800, 600);
+		background(255, 255, 255);
+		fill(0, 0, 0, 255);
+		x = width/2;
+		y = height/2;
+		dx = 0;
+		dy = 0;
+
+		// instructions:
+		textSize(20);
+		textAlign(LEFT);
+		//text("draw: cima, baixo, esquerda, direita, limpar", 20, 20);
+
+		//myRec.onResult = parseResult; // now in the constructor
+		myRec.start(); // start engine
+	}
+
+	function draw()
+	{       
+		clear();
+		fill(100,0,0);
+		stroke(100,0,0);
+		textSize(40);
+		text("O que você deseja?",20,30);
+		fill(0);
+		stroke(0);
+		textSize(22);
+		text("Ação Recente: " + msg,20,60);
+
+		if (url == 'Globo' & ok == 1){ok =0; var myChild = window.open('http://globo.com','','width=,height=,resizable=no');msg = "Abrindo site da Globo";myChild.blur();}
+
+		if (url == 'Instagram' & ok == 1){ ok =0;var myChild = window.open('http://instagram.com','','width=,height=,resizable=no');msg = "Abrindo Instagram";myChild.blur();}
+
+		if (url == 'notícias' & ok == 1){ ok =0;var myChild = window.open('http://news.google.com/','','width=,height=,resizable=no');msg = "Abrindo site Google News";myChild.blur();}
+
+		if (url == 'Linkedin' & ok == 1){ ok =0;var myChild = window.open('http://linkedin.com/','','width=,height=,resizable=no');msg = "Abrindo Linkedin"; myChild.blur();}
+	}
+
+	function parseResult()
+	{
+
+		complete = myRec.resultString;
+		var mostrecentword = complete.split(' ').pop();
+		ultima = mostrecentword;
+
+
+		if(mostrecentword.indexOf("Globo")!==-1 & ultima != url)
+		{ 
+			url = 'Globo';
+			ok = 1;
+ 
+		 }
+
+		if(mostrecentword.indexOf("Instagram")!==-1 & ultima != url)
+		{ 
+			url = 'Instagram';
+			ok = 1;
+ 
+		 }
+		if(mostrecentword.indexOf("notícias")!==-1 & ultima != url)
+		{ 
+			url = 'notícias';
+			ok = 1;
+ 
+		 }
+		if(mostrecentword.indexOf("Linkedin")!==-1 & ultima != url)
+		{ 
+			url = 'Linkedin';
+			ok = 1;
+ 
+		 }
+		console.log(mostrecentword);
+	}
+
+</script>
+</head>
+<body>
+</body>
+</html>
